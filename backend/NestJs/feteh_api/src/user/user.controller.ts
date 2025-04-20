@@ -10,11 +10,13 @@ import {
   ParseIntPipe, 
   HttpCode,
   HttpStatus,
+  UseGuards,
 } from '@nestjs/common';
 import { UsersService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Users } from './entities/user.entity';
+import { JwtAuthGuard } from 'src/auth/guard/jwt-auth-guard';
 
 @Controller('users')
 export class UserController {
@@ -25,6 +27,7 @@ export class UserController {
     return this.userService.create(createUserDto);
   }
 
+  @UseGuards(JwtAuthGuard) 
   @Get()
   async findAll(): Promise<Users[]> {
     return this.userService.findAll();
