@@ -4,22 +4,24 @@ import { Repository } from 'typeorm';
 import { Users } from './entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
-export class UserService {
+export class UsersService {
   constructor(
     @InjectRepository(Users)
     private readonly userRepository: Repository<Users>,
   ) {}
+
   async create(createUserDto: CreateUserDto): Promise<Users> {
     const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
     const user = this.userRepository.create({
       ...createUserDto,
-      password: hashedPassword
+      password: hashedPassword,
     });
     return this.userRepository.save(user);
-  } 
+  }
 
   async findAll(): Promise<Users[]> {
     return this.userRepository.find();
@@ -29,10 +31,13 @@ export class UserService {
     return this.userRepository.findOneBy({ id });
   }
 
-  async update(id: number, updateUserDto: UpdateUserDto): Promise<Users | null> {
+  async update(
+    id: number,
+    updateUserDto: UpdateUserDto,
+  ): Promise<Users | null> {
     const user = await this.userRepository.findOneBy({ id });
     if (!user) return null;
-    const updatedUserData = { ...updateUserDto }; 
+    const updatedUserData = { ...updateUserDto };
     if (updateUserDto.password) {
       updatedUserData.password = await bcrypt.hash(updateUserDto.password, 10);
     } else {
@@ -41,11 +46,12 @@ export class UserService {
     const updatedUser = this.userRepository.merge(user, updatedUserData);
     return this.userRepository.save(updatedUser);
   }
- 
+
   async remove(id: number): Promise<Users | null> {
     const user = await this.userRepository.findOneBy({ id });
     if (!user) return null;
- 
+
     await this.userRepository.remove(user);
     return user;
-  }}
+  }
+}

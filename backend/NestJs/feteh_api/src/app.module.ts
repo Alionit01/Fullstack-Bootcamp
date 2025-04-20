@@ -12,8 +12,8 @@ import { Users } from './user/entities/user.entity';
     host: 'localhost',
     port: 5432,
     username: 'postgres',
-    password: 'yourpassword',
-    database: 'yourdb',
+    password: 'pak1stani12',
+    database: 'nest_db',
     entities: [Users], // ✅ include all your entities
     synchronize: false, // ✅ set to false when using migrations
   }),UserModule],
