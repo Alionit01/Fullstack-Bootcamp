@@ -1,0 +1,12 @@
+{
+  "dependencies": {
+    "turbo": "^2.5.3"
+  },
+  "scripts": {
+    "dev": "turbo run dev"
+  },
+  "workspaces": [
+    "apps/*"
+  ],
+  "packageManager": "npm@9.6.7"
+}
