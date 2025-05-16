@@ -1,31 +1,21 @@
-import { useEffect, useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import LoginPage from './assets/components/LoginPage';
+import SignupPage from './assets/components/SignupPage';
+import './index.css'; // You can keep global styles here
+import Dashboard from './Dashboard';
+import MyOffers from './MyOffers';
 
 function App() {
-  const [greeting, setGreeting] = useState('');
-
-  useEffect(() => {
-    fetch('/api')
-    .then(response =>response.text())
-    .then(setGreeting);
-  }, []);
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>{greeting}</h1>
-     
-    </>
-  )
+    <BrowserRouter>
+      <Routes>
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/" element={<SignupPage />} />
+        <Route path="/Dashboard" element={<Dashboard />} />
+        <Route path="/my-offers" element={<MyOffers />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
-export default App
+export default App;

@@ -1,0 +1,95 @@
+/* dashboard.css — Dark Mode & Sleek Look */
+
+.dashboard-bg {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(120deg, #232526 0%, #414345 100%);
+  color: #e0e0e0;
+  overflow: hidden; /* Prevent page scroll */
+  z-index: 0;
+}
+
+.dashboard-container {
+  max-width: 1100px;
+  height: calc(100vh - 3.5rem); /* Adjust for navbar height + margin */
+  margin: 0.5rem auto 0 auto;
+  padding: 2rem;
+  background: #18191a;
+  border-radius: 1.5rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+  animation: pop-in 0.6s ease-out;
+  overflow-y: auto; /* Enable vertical scroll inside container */
+  position: relative;
+}
+
+.dashboard-container h2 {
+  text-align: center;
+  color: #ffffff;
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin-bottom: 2rem;
+}
+
+.offers-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 2rem;
+}
+
+.offer-card {
+  background: #232526;
+  border-radius: 1rem;
+  padding: 2rem 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s, box-shadow 0.2s;
+  border: 1px solid #333;
+}
+
+.offer-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+}
+
+.offer-card h3 {
+  color: #66a6ff;
+  font-size: 1.3rem;
+  margin-bottom: 0.5rem;
+}
+
+.offer-card p {
+  color: #ccc;
+  margin: 0.3rem 0;
+  font-size: 0.95rem;
+}
+
+.offer-card button {
+  margin-top: 1rem;
+  background: linear-gradient(90deg, #232526 0%, #414345 100%);
+  color: #e0e0e0;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.7rem 1.2rem;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s, color 0.3s;
+}
+
+.offer-card button:hover {
+  background: linear-gradient(90deg, #414345 0%, #232526 100%);
+  color: #66a6ff;
+}
+
+@keyframes pop-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.95) translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
