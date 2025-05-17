@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { useAuth } from '../../auth/AuthContext';
 import './AuthForm.css';
 
 export default function SignupPage() {
@@ -8,6 +9,7 @@ export default function SignupPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -22,9 +24,9 @@ export default function SignupPage() {
     }
     setSubmitted(true);
 
-    // ✅ Simulate signup and store token
-    localStorage.setItem('authToken', 'demo-token');
-    navigate('/dashboard'); // redirect to dashboard after signup
+    // Simulate signup (replace with real API call later)
+    login({ name: form.name, email: form.email }, 'demo-token');
+    navigate('/dashboard');
   }
 
   return (

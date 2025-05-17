@@ -1,4 +1,6 @@
+import { useState } from 'react';
 import Navbar from './assets/components/Navbar';
+import OfferCard from './assets/components/OfferCard';
 import './Dashboard.css';
 
 const allOffers = [
@@ -9,38 +11,8 @@ const allOffers = [
 
 const currentUser = 'Alice'; // Replace with real user logic
 
-function OfferCard({ user, offer, want }: { user: string; offer: string; want: string }) {
-  return (
-    <div className="offer-card" style={{ minHeight: 180, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-      <div>
-        <h3 style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <span role="img" aria-label="offer">💡</span> {offer}
-        </h3>
-        <p>
-          <strong>Wants:</strong> <span style={{ color: '#4A90E2' }}>{want}</span>
-        </p>
-        <p style={{ fontSize: '0.95rem', color: '#aaa' }}>
-          <strong>Posted by:</strong> {user}
-        </p>
-      </div>
-      <button style={{
-        marginTop: '1rem',
-        background: 'linear-gradient(90deg, #4A90E2 0%, #66a6ff 100%)',
-        color: '#fff',
-        border: 'none',
-        borderRadius: '0.5rem',
-        padding: '0.6rem 1.2rem',
-        fontWeight: 600,
-        cursor: 'pointer',
-        transition: 'background 0.2s'
-      }}>
-        View
-      </button>
-    </div>
-  );
-}
-
 export default function MyOffers() {
+  const [viewOffer, setViewOffer] = useState<null | typeof allOffers[0]>(null);
   const myOffers = allOffers.filter((o) => o.user === currentUser);
 
   return (
@@ -58,7 +30,7 @@ export default function MyOffers() {
               padding: '0.6rem 1.2rem',
               fontWeight: 600,
               cursor: 'pointer',
-              fontSize: '1rem'
+              fontSize: '1rem',
             }}
             onClick={() => alert('Show create offer modal!')}
           >
@@ -67,7 +39,13 @@ export default function MyOffers() {
         </div>
         <div className="offers-grid">
           {myOffers.length ? (
-            myOffers.map((o) => <OfferCard key={o.id} {...o} />)
+            myOffers.map((o) => (
+              <OfferCard
+                key={o.id}
+                {...o}
+                onView={() => setViewOffer(o)}
+              />
+            ))
           ) : (
             <div style={{ color: '#aaa', textAlign: 'center', width: '100%' }}>
               <div style={{ fontSize: 48, marginBottom: 8 }}>🗂️</div>
@@ -82,7 +60,7 @@ export default function MyOffers() {
                   padding: '0.6rem 1.2rem',
                   fontWeight: 600,
                   cursor: 'pointer',
-                  fontSize: '1rem'
+                  fontSize: '1rem',
                 }}
                 onClick={() => alert('Show create offer modal!')}
               >
@@ -91,6 +69,37 @@ export default function MyOffers() {
             </div>
           )}
         </div>
+        {/* Simple modal for viewing offer details */}
+        {viewOffer && (
+          <div style={{
+            position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh',
+            background: 'rgba(0,0,0,0.6)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9999
+          }}>
+            <div style={{
+              background: '#232526', color: '#e0e0e0', borderRadius: 12, padding: 32, minWidth: 320, boxShadow: '0 8px 32px rgba(0,0,0,0.35)'
+            }}>
+              <h3 style={{ marginTop: 0, color: '#4A90E2' }}>{viewOffer.offer}</h3>
+              <p><strong>Wants:</strong> {viewOffer.want}</p>
+              <p><strong>Posted by:</strong> {viewOffer.user}</p>
+              <button
+                style={{
+                  marginTop: 16,
+                  background: 'linear-gradient(90deg, #4A90E2 0%, #66a6ff 100%)',
+                  color: '#fff',
+                  border: 'none',
+                  borderRadius: '0.5rem',
+                  padding: '0.6rem 1.2rem',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  fontSize: '1rem',
+                }}
+                onClick={() => setViewOffer(null)}
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

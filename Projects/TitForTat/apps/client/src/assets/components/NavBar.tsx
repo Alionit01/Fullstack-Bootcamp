@@ -1,12 +1,14 @@
 import React from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { useAuth } from '../../auth/AuthContext';
 
 export default function Navbar() {
   const navigate = useNavigate();
   const location = useLocation();
+  const { logout, user } = useAuth();
 
   function handleLogout() {
-    localStorage.removeItem('authToken');
+    logout();
     navigate('/login');
   }
 
@@ -70,7 +72,14 @@ export default function Navbar() {
   return (
     <nav style={navStyle}>
       <div style={containerStyle}>
-        <div style={logoStyle}>TitForTat</div>
+        <div style={logoStyle}>
+          TitForTat{' '}
+          {user && (
+            <span style={{ fontSize: '1rem', marginLeft: 12 }}>
+              ({user.name})
+            </span>
+          )}
+        </div>
         <ul style={ulStyle}>
           <li>
             <Link

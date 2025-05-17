@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { useAuth } from '../../auth/AuthContext'; // <-- import your context hook
 import './AuthForm.css';
-
 
 export default function LoginPage() {
   const [form, setForm] = useState({ email: '', password: '' });
@@ -9,13 +9,13 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const { user, login } = useAuth(); // <-- use context
 
   useEffect(() => {
-    const isLoggedIn = localStorage.getItem('authToken');
-    if (isLoggedIn) {
+    if (user) {
       navigate('/dashboard'); // if already logged in, redirect
     }
-  }, [navigate]);
+  }, [navigate, user]);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -30,9 +30,9 @@ export default function LoginPage() {
     }
     setSubmitted(true);
 
-    // ✅ Simulate login and store token
-    localStorage.setItem('authToken', 'demo-token');
-    navigate('/dashboard'); // redirect to dashboard after login
+    // Simulate login (replace with real API call)
+    login({ name: 'Demo User', email: form.email }, 'demo-token');
+    navigate('/dashboard');
   }
 
   return (
@@ -92,3 +92,5 @@ export default function LoginPage() {
     </div>
   );
 }
+
+
