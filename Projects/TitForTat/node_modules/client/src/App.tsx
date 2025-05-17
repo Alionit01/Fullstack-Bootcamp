@@ -5,6 +5,7 @@ import './index.css'; // You can keep global styles here
 import Dashboard from './Dashboard';
 import MyOffers from './MyOffers';
 import { AuthProvider } from './auth/AuthContext';
+import ProtectedRoute from './assets/components/ProtectedRoute';
 
 function App() {
   return (
@@ -13,8 +14,22 @@ function App() {
         <Routes>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/" element={<SignupPage />} />
-          <Route path="/Dashboard" element={<Dashboard />} />
-          <Route path="/my-offers" element={<MyOffers />} />
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/my-offers"
+            element={
+              <ProtectedRoute>
+                <MyOffers />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </BrowserRouter>
     </AuthProvider>
