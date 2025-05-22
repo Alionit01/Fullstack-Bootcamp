@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, BadRequestException } from '@nestjs/common';
+import { Body, Controller, Get, Post, Put, Delete, Param, BadRequestException } from '@nestjs/common';
 import { AppService } from './app.service';
 
 @Controller('auth')
@@ -25,5 +25,35 @@ export class AppController {
     } catch (e) {
       throw new BadRequestException(e.message);
     }
+  }
+}
+
+@Controller('offers')
+export class OfferController {
+  constructor(private readonly appService: AppService) {}
+
+  @Post()
+  create(@Body() body: any) {
+    return this.appService.createOffer(body);
+  }
+
+  @Get()
+  findAll() {
+    return this.appService.getOffers();
+  }
+
+  @Get('user/:userId')
+  findByUser(@Param('userId') userId: number) {
+    return this.appService.getOffersByUser(Number(userId));
+  }
+
+  @Put(':id')
+  update(@Param('id') id: number, @Body() body: any) {
+    return this.appService.updateOffer(Number(id), body);
+  }
+
+  @Delete(':id')
+  remove(@Param('id') id: number) {
+    return this.appService.deleteOffer(Number(id));
   }
 }

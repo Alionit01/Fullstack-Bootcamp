@@ -2,7 +2,9 @@ import { createContext, useContext, useState } from 'react';
 import type { ReactNode } from 'react';
 
 
-type User = { name: string; email: string } | null;
+type User = {
+  id: any; name: string; email: string 
+} | null;
 
 interface AuthContextType {
   user: User;

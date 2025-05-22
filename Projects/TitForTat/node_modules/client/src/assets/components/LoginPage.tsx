@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { useAuth } from '../../auth/AuthContext'; // <-- import your context hook
+import { useAuth } from '../../auth/AuthContext';
 import './AuthForm.css';
 
 export default function LoginPage() {
@@ -9,11 +9,11 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
-  const { user, login } = useAuth(); // <-- use context
+  const { user, login } = useAuth();
 
   useEffect(() => {
     if (user) {
-      navigate('/dashboard'); // if already logged in, redirect
+      navigate('/dashboard');
     }
   }, [navigate, user]);
 
@@ -22,7 +22,7 @@ export default function LoginPage() {
     setError('');
   }
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!form.email || !form.password) {
       setError('Please fill in all fields.');
@@ -30,9 +30,20 @@ export default function LoginPage() {
     }
     setSubmitted(true);
 
-    // Simulate login (replace with real API call)
-    login({ name: 'Demo User', email: form.email }, 'demo-token');
-    navigate('/dashboard');
+    try {
+      const res = await fetch('http://localhost:3000/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      });
+      if (!res.ok) throw new Error('Invalid credentials');
+      const data = await res.json();
+      login(data.user, data.token);
+      navigate('/dashboard');
+    } catch (err) {
+      setError('Login failed. Please try again.');
+      setSubmitted(false);
+    }
   }
 
   return (
@@ -80,7 +91,7 @@ export default function LoginPage() {
           </span>
         </div>
         {error && <div style={{ color: '#ff4d4f', marginTop: '0.5rem' }}>{error}</div>}
-        <button type="submit">Log In</button>
+        <button type="submit" disabled={submitted}>Log In</button>
         <div style={{ marginTop: '1rem', textAlign: 'center', color: '#aaa' }}>
           Don't have an account?{' '}
           <Link to="/" style={{ color: '#66a6ff', textDecoration: 'underline' }}>
